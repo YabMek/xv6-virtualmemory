@@ -27,6 +27,7 @@ int uptime(void);
 int yield(void);
 int shutdown(void);
 int getpagetableentry(int pid, int address);
+int getprocpid(int pid);
 
 // ulib.c
 int stat(const char*, struct stat*);
