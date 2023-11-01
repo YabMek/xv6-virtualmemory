@@ -7,7 +7,6 @@
 #include "proc.h"
 #include "elf.h"
 
-void intToHex(unsigned int x, char *output);
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
 
@@ -432,38 +431,19 @@ int sys_dumppagetable(void){
   for(i = 0; i < p->sz; i+=PGSIZE){
     pte = walkpgdir(p->pgdir, (void *) i, 0);
 
-    char virtualhex[9];
-    char physicalhex[9];
-    intToHex(i>> PTXSHIFT, virtualhex);
-    intToHex(PTE_ADDR(*pte) >> PTXSHIFT, physicalhex);
-
     //page directory exists and page table entry is present
     if (*pte & PTE_P) {
-        cprintf("%s P %s %s %s \n",
-            virtualhex,
+        cprintf("%x P %s %s %x \n",
+            i>> PTXSHIFT,
             *pte & PTE_U ? "U" : "-",
             *pte & PTE_W ? "W" : "-",
-            physicalhex
+            PTE_ADDR(*pte) >> PTXSHIFT
         );
     } 
   }
   cprintf("END PAGE TABLE\n");
 
   return 0;
-}
-
-//must input output array of size 9, and max 32bit number for x
-void intToHex(unsigned int x, char *output){
-    
- char converter[16] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
- int shifter = x;
- 
- for(int i = 7; i >= 0; i--){
-     output[i] = converter[shifter & 15];
-     shifter = shifter >> 4;
- }
- output[8] = '\0';
- 
 }
 
 //PAGEBREAK!
