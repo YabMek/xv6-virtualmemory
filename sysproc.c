@@ -102,3 +102,34 @@ int sys_shutdown(void)
   shutdown();
   return 0;
 }
+
+int sys_getpagetableentry(void) {
+    int pid, address;
+    //make sure args are valid
+    if (argint(0, &pid) < 0 || argint(1, &address) < 0)
+        return -1;
+    //call the source of getpagetableentry
+    return getpagetableentry(pid, address);
+}
+
+int
+getpagetableentry(int pid, int address)
+{
+  pte_t *pte;
+  
+  struct proc *p;
+
+  //obtain the process based on the pid
+  p = getprocpid(pid);
+  if (p == 0){
+    return 0;
+  }
+
+  pte = walkpgdir(myproc()->pgdir, (void *) address, 0);
+  //if the pte does exist and the pte is present then return the pte
+  if (pte && (*pte & PTE_P)){
+    return pte;
+  }
+  return 0;
+}
+

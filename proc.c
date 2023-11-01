@@ -532,3 +532,14 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+struct proc* 
+getprocpid(int pid) {
+  struct proc *p;
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p->state != UNUSED && p->pid == pid) {
+      return p;
+    }
+  }
+  return 0;  // Process not found
+}
