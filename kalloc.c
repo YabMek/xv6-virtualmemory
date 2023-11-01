@@ -95,3 +95,37 @@ kalloc(void)
   return (char*)r;
 }
 
+int sys_isphysicalpagefree(void){
+  int ppn;
+  //make sure args are valid
+  if (argint(0, &ppn) < 0){
+      return -1;
+  }
+
+  struct run *r;
+
+  if(kmem.use_lock)
+    acquire(&kmem.lock);
+  r = kmem.freelist;
+
+  //as long as the linked list doesn't reach the end
+  while(r){
+    if(V2P((char*)r) == ppn){
+      
+      //release lock
+      if(kmem.use_lock)
+        release(&kmem.lock);
+
+      return 1;
+    }
+
+    r = r->next;
+  }
+  
+  //release lock
+  if(kmem.use_lock)
+    release(&kmem.lock);
+
+  return 0;
+  
+}
