@@ -107,6 +107,7 @@ extern int sys_yield(void);
 extern int sys_shutdown(void);
 extern int sys_getpagetableentry(void);
 extern int sys_isphysicalpagefree(void);
+extern int sys_dumppagetable(void);
 
 
 static int (*syscalls[])(void) = {
@@ -135,6 +136,7 @@ static int (*syscalls[])(void) = {
 [SYS_shutdown] sys_shutdown,
 [SYS_getpagetableentry] sys_getpagetableentry,
 [SYS_isphysicalpagefree] sys_isphysicalpagefree,
+[SYS_dumppagetable] sys_dumppagetable,
 };
 
 void

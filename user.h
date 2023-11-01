@@ -28,6 +28,7 @@ int yield(void);
 int shutdown(void);
 int getpagetableentry(int pid, int address);
 int isphysicalpagefree(int ppn);
+int dumppagetable(int pid);
 
 // ulib.c
 int stat(const char*, struct stat*);
