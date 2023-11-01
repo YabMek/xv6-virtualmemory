@@ -535,7 +535,7 @@ procdump(void)
 
 struct proc* 
 getprocpid(int pid) {
-  struct proc *p;
+  static struct proc *p;
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
     if (p->state != UNUSED && p->pid == pid) {
       return p;
