@@ -431,7 +431,7 @@ int sys_dumppagetable(void){
     pte = walkpgdir(p->pgdir, (void *) i, 0);
 
     //page directory exists and page table entry is present
-    if (*pte & PTE_P) {
+    if (pte && (*pte & PTE_P)) {
         cprintf("%x P %s %s %x \n",
             i>> PTXSHIFT,
             *pte & PTE_U ? "U" : "-",

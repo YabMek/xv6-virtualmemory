@@ -110,7 +110,7 @@ int sys_isphysicalpagefree(void){
 
   //as long as the linked list doesn't reach the end
   while(r){
-    if(V2P((char*)r) == ppn * PGSIZE){
+    if(V2P(r) >> PTXSHIFT == ppn){
       
       //release lock
       if(kmem.use_lock)
