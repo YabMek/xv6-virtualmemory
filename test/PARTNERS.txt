@@ -1,0 +1,6 @@
+Yeabsira Mekonnen(ytm9yz)
+Nicholas Talton(nrt3xs)
+
+Yeabsira and Nicholas worked together on each part of the lab. We worked through both the logic and implementation of all 3 functions.
+After running it through the test suite for oob and exec we were passing oob but needed to check our logic for exec. After going back and checking the logic for if the page is empty, exec began to pass.
+They both tested the implementation with the ptetool and QEMU monitor.

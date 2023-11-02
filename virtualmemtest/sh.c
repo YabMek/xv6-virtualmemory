@@ -141,7 +141,7 @@ getcmd(char *buf, int nbuf)
   return 0;
 }
 
-//char my_test_str[] = "i am here";
+char my_test_str[] = "i am here";
 
 int
 main(void)
@@ -157,8 +157,8 @@ main(void)
     }
   }
 
-  //printf(2, "my pid: %d\n", getpid());
-  //printf(2, "addr of text: %x\n", my_test_str);
+  printf(2, "my pid: %d\n", getpid());
+  printf(2, "addr of text: %x\n", my_test_str);
 
   // Read and run input commands.
   while(getcmd(buf, sizeof(buf)) >= 0){
