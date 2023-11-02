@@ -404,8 +404,7 @@ int sys_getpagetableentry(void) {
 
   pte = walkpgdir(p->pgdir, (void *) address, 0);
   //if the page table for address exists and the entry in the page table is mapped for address
-  //might have to re-add '&& (*pte & PTE_P)'
-  if (pte){
+  if (pte && (*pte & PTE_P)){
     return *pte;
   }
   return 0;
