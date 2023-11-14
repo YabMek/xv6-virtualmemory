@@ -78,6 +78,55 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
 
+  case T_PGFLT:
+    void * va = (void *) rcr2();
+    //page fault as a result of alloc on demand
+    if((uint)va < myproc()->sz){
+      char * mem = kalloc();
+
+      //can't grab new frame for to map to this virtual address
+      if(mem == 0){
+        cprintf("alloc on demand: out of memory\n");
+        myproc()->killed = 1;
+      }
+      else{
+        memset(mem, 0, PGSIZE);
+
+        //can't grab new frame to store the new page table for the mapping
+        if(mappages(myproc()->pgdir, va, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
+          cprintf("alloc on demand: out of memory\n");
+          kfree(mem);
+          myproc()->killed = 1;
+        }
+        //sucessfully alloacted on demand
+        else{
+          switchuvm(myproc());
+          cprintf("success\n");
+          return;
+        }
+      }
+
+    }
+    //actual segfault, so follow old behavior
+    else{
+      /*if(myproc() == 0 || (tf->cs&3) == 0){
+        // In kernel, it must be our mistake.
+        cprintf("unexpected trap %d from cpu %d eip %x (cr2=0x%x)\n",
+                tf->trapno, cpuid(), tf->eip, rcr2());
+        panic("trap");
+      }
+      // In user space, assume process misbehaved.
+      cprintf("pid %d %s: trap %d err %d on cpu %d "
+              "eip 0x%x addr 0x%x--kill proc\n",
+              myproc()->pid, myproc()->name, tf->trapno,
+              tf->err, cpuid(), tf->eip, rcr2());
+      myproc()->killed = 1;
+      */
+      cprintf("segfault\n");
+      myproc()->killed = 1;
+    }
+  break;
+
   //PAGEBREAK: 13
   default:
     if(myproc() == 0 || (tf->cs&3) == 0){
