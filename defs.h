@@ -1,4 +1,5 @@
 #include "param.h"
+
 struct buf;
 struct context;
 struct file;
@@ -176,6 +177,7 @@ void            uartintr(void);
 void            uartputc(int);
 
 // vm.c
+typedef  uint pte_t;
 void            seginit(void);
 void            kvmalloc(void);
 pde_t*          setupkvm(void);
@@ -191,6 +193,7 @@ void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
 int      mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm);
+pte_t *  walkpgdir(pde_t *pgdir, const void *va, int alloc);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

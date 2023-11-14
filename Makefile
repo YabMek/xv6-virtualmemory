@@ -189,6 +189,7 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_pp_suite\
+	_pp_test\
 	_zombie\
         _shutdown\
 
